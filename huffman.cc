@@ -1,29 +1,12 @@
 #include <iostream>
 #include <fstream>
-
 #include <map>
 
-struct Node {
-  char value;
-  double freq;
-  Node* left;
-  Node* right;
-  Node* parent;
-
-  Node(char value, double freq) : value(value), freq(freq), left(nullptr), right(nullptr)
-  {}
-
-};
-
-int main(int argc, char** argv) {
+std::map<char, double> build_char_count_dict(std::ifstream& text) {
   std::map<char, double> char_dict;
-
-  std::ifstream text_data;
-  text_data.open(argv[1]);
-
   char c;
-  while (text_data.get(c)) {
-    std::printf("%c", c);
+
+  while (text.get(c)) {
     auto key_search = char_dict.find(c);
     if (key_search != char_dict.end()) {
       char_dict[c] += 1.0;
@@ -33,17 +16,39 @@ int main(int argc, char** argv) {
     }
   }
 
-  text_data.close();
-  std::printf("\n");
+  return char_dict;
+}
 
-  int total_chars {0};
-  for (std::map<char, double>::iterator iter = char_dict.begin(); iter != char_dict.end(); iter++) {
-    auto key = iter->first;
-    auto val = iter->second;
-    std::printf("%c, %f\n", key, val);
-    total_chars += (int)val;
+double normalize_to_freq(std::map<char, double>& input_dict) {
+  double total_chars {0};
+
+  for (auto x : input_dict) {
+    total_chars += x.second;
   }
-  std::printf("Total characters = %d\n", total_chars);
+
+  for (auto x : input_dict) {
+    input_dict[x.first] /= total_chars;
+  }
+
+  return total_chars;
+}
+
+
+
+int main(int argc, char** argv) {
+
+  std::ifstream text_data;
+  text_data.open(argv[1]);
+  std::map<char, double> char_dict = build_char_count_dict(text_data);
+  text_data.close();
+
+  double total_chars = normalize_to_freq(char_dict);
+
+  for (auto x : char_dict) {
+    std::printf("%c, %f\n", x.first, x.second);
+  }
+
+  std::printf("Total characters = %d\n", (int)total_chars);
 
   return 0;
 }
