@@ -4,17 +4,13 @@
 struct Node {
   std::string value;
   double freq;
-  Node* left;
-  Node* right;
-  Node* parent;
+  Node* left = nullptr;
+  Node* right = nullptr;
+  Node* parent = nullptr;
 
   Node();
 
-  Node(std::string value, double freq) : value(value), freq(freq) {
-    left = nullptr;
-    right = nullptr;
-    parent = nullptr;
-  }
+  Node(std::string value, double freq) : value(value), freq(freq) {}
 
   Node(Node* left_child, Node* right_child);
 
@@ -30,9 +26,6 @@ void Node::update_parent(Node* new_parent) {
 Node::Node() {
   value = 'x';
   freq = 0.0;
-  left = nullptr;
-  right = nullptr;
-  parent = nullptr;
 }
 
 
