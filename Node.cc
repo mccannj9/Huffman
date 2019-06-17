@@ -47,7 +47,7 @@ bool Node::is_leaf() {
 
 
 bool Node::is_root() {
-  if (parent == nullptr) {
+  if (!parent) {
     return true;
   }
   return false;
@@ -72,7 +72,7 @@ int main() {
   std::printf("Root is leaf? %d\n", (int)root.is_leaf());
   std::printf("Root is root? %d\n", (int)root.is_root());
   std::printf("Left is leaf? %d\n", (int)root.left->is_leaf());
-  std::printf("Right is leaf? %d\n", (int)root.right->is_leaf());
+  std::printf("Right is leaf? %d\n", (int)(*root.right).is_leaf());
   std::printf("Left is root? %d\n", (int)root.left->is_root());
   std::printf("Right is root? %d\n", (int)root.right->is_root());
   return 0;
